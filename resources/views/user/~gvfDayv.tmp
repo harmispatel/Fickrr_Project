@@ -1,0 +1,611 @@
+@extends('user.layout')
+@section('content')
+
+<section class="main-banner">    
+  @if($allsettings->site_banner != '')
+
+                                            <?php @$sitebanner=explode(",", $allsettings->site_banner); ?>
+
+                                            @if(count(@$sitebanner) > 0 && @$sitebanner[0] != '' )
+                                              <div class="main-banner-inr owl-carousel owl-theme">
+      @foreach(@$sitebanner as $key=>$value)
+                                               
+  
+        <div class="main-banner-item" data-dot="<button>01</button>">
+            <img src="{{ url('/') }}/public/storage/settings/{{ $value }}"  alt="">
+            <div class="main-banner-info">
+                <div class="container">
+                    <div class="main-banner-content owl-slide-text">
+                        <span class="owl-slide-animated"></span>
+                        <h1 class="owl-slide-animated"><br></h1>
+                        <a href="#get-start" class="scroll-down owl-slide-animated"></a>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+         @endforeach
+     </div>
+     @endif
+    @else
+                                              <div class="main-banner-inr owl-carousel owl-theme">  
+        <div class="main-banner-item" data-dot="<button>02</button>">
+            <img src="{{ url('/') }}/public/storage/settings/{{ $allsettings->site_banner }}"  alt="">
+            <div class="main-banner-info">
+                <div class="container">
+                    <div class="main-banner-content owl-slide-text">
+                        <span class="owl-slide-animated">A Hiking guide</span>
+                        <h1 class="owl-slide-animated">Be prepared for the<br> Mountains and beyond!</h1>
+                        <a href="#get-start" class="scroll-down owl-slide-animated">scroll down</a>
+                    </div>
+                </div>
+            </div>
+        </div>  
+          </div> 
+         @endif   
+  
+</section>
+
+
+
+<section class="bb-menu">
+    <div class="container">
+        <div class="bb-menu-inr">
+             <nav>
+            <ul class="nav" id="nav-tab" role="tablist">
+                <li><a id="nav-about-tab"  href="{{ url('/')}} " role="tab" >{{ trans('labels.Home') }} </a></li>
+                <li><a id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="true" class="active">{{ trans('labels.About') }} </a></li>
+               
+
+                <li><a id="nav-designer-tab" data-toggle="tab" href="#nav-designer" role="tab" aria-controls="nav-designer" aria-selected="false">{{ trans('labels.Designer')}}</a></li>
+
+               <!--  <li><a id="nav-venor-tab" data-toggle="tab" href="#nav-vendor" role="tab" aria-controls="nav-vendor" aria-selected="false">{{ trans('labels.Vendor')}}</a></li> -->
+                <!--   <li class="nav-item nav-link dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" href="#nav-room" role="tab" aria-controls="nav-room" aria-selected="false"><a >Room</a></li> -->
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ trans('labels.Room') }}</a>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                    @if(count(@$item_room)>0)
+                        @foreach(@$item_room as $key=>$value)
+                       
+                            <a id="nav-test-tab" data-toggle="tab" href="#nav-test" class="dropdown-item" role="tab" aria-controls="nav-test" aria-selected="false" onClick="loadAllimages('{{ $value->item_type_id }}','{{ $item['item']->item_id }}','0')"> {{ @$value->item_type_name }}</a>
+
+                        @endforeach
+                        @else
+                            <a class="dropdown-item" href="#">Location ,please add from backend</a>
+                        @endif
+                        <a id="nav-test-tab" data-toggle="tab" href="#nav-test" class="dropdown-item" role="tab" aria-controls="nav-test" aria-selected="false">Test1</a>
+                        <!-- <a class="dropdown-item" href="#">Test2</a> -->
+                  </div>
+                </li>
+                <li><input type="hidden" name="roomid" id="roomid"  value="" /></li>
+            </ul> 
+
+           </nav>
+          
+
+        </div>
+    </div>
+</section>
+
+<!-- <section class="vendor-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="vendor-about text-center mb-5">
+          <div class="section-title mb-3">
+            <h2>About Venor</h2>
+          </div>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="vendor-info">
+          <a href="mailto:example@email.com"><i class="ti ti-mail"></i>example@email.com</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="vendor-info">
+          <a href="#"><i class="ti ti-phone"></i>0123456789</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="vendor-info">
+          <a href="#"><i class="ti ti-map"></i>123 dummy address</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<section class="about-page">
+
+ <!--    <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="nav-about">About</div>
+            <div class="tab-pane fade show active" id="Designer" role="tabpanel" aria-labelledby="nav-Designer">Desinger</div>
+            <div class="tab-pane fade show active" id="room" role="tabpanel" aria-labelledby="nav-room">Room</div>
+            <div class="tab-pane fade show active" id="location" role="tabpanel" aria-labelledby="nav-room">location</div>
+    </div>
+
+ -->
+
+  <div class="tab-content container" id="nav-tabContent">
+  
+
+   <div class="tab-pane fade show active" id="nav-about" role="tabpanel" aria-labelledby="nav-about">
+        <div class="section-title text-center mb-4">
+            <h2>{{ trans('labels.abouthotel')}}</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+              <div class="share-fav about-social">
+                <ul class="with-outline">
+                  <li><a class="ti ti-brand-facebook" href="{{ $item['item']->facebook }}"></a></li>
+                  <li><a class="ti ti-brand-twitter" href="{{ $item['item']->twitter }}"></a></li>
+                  <li><a class="ti ti-brand-instagram" href="{{ $item['item']->instagram }}"></a></li>
+                  <li><a class="ti ti-brand-linkedin" href="{{ $item['item']->linkedin }}"></a></li>
+                </ul>
+              </div>
+                <div class="about-page-text text-justify">
+                   @php echo html_entity_decode($item['item']->item_desc); @endphp
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="about-hotel">
+
+                  <?php 
+                   // echo "<pre>";print_r($item['item']);exit;
+                  ?>
+
+                      @if($item['item']->video_preview_type!='')
+                      @if($item['item']->video_preview_type == 'youtube')
+                      @if($item['item']->video_url != '')
+                      @php
+                      $link = $item['item']->video_url;
+                    
+                       $video_id =array();
+                        @endphp
+                      @if(strpos($link, "?v=") !== false)
+                      @php
+                      $video_id = explode("?v=", $link);
+                     @endphp
+                      @endif
+                      @php
+                      $video_id = count($video_id) > 0 && !empty($video_id) ? $video_id[1] : '';
+                      @endphp
+
+
+                      <iframe width="100%" height="430" src="https://www.youtube.com/embed/{{ $video_id }}?rel=0&version=3&loop=1&playlist={{ $video_id }}" frameborder="0" allow="autoplay" scrolling="no"></iframe>        
+                      @else
+                      <img src="{{ url('/') }}/resources/views/assets/no-video.png" alt="{{ $item['item']->item_name }}" class="single-thumbnail">
+                      @endif
+                      @endif
+                      @if($item['item']->video_preview_type == 'mp4')
+                      @if($item['item']->video_file != '')
+                      @if($allsettings->site_s3_storage == 1)
+                      @php $videofileurl = Storage::disk('s3')->url($item['item']->video_file); 
+                      @endphp
+
+                       <video width="100%" height="430" controls loop><source src="{{ $videofileurl }}" type="video/mp4">{{ Helper::translation(5979,$translate) }}</video>
+                      @else
+                      <video width="100%" height="430" controls loop><source src="{{ url('/') }}/public/storage/items/{{ $item['item']->video_file }}" type="video/mp4">{{ Helper::translation(5979,$translate) }}</video>                @endif
+                      @else
+                      <img src="{{ url('/') }}/resources/views/assets/no-video.png" alt="{{ $item['item']->item_name }}" class="single-thumbnail">
+                      @endif
+                      @endif
+                  @else  
+                      @if($item['item']->item_preview!='')
+                      <a class="gallery-item rounded-lg mb-grid-gutter text-center d-inline-block" href="{{ url('/') }}/public/storage/items/{{ $item['item']->item_preview }}" data-sub-html="{{ $item['item']->item_name }}">
+                      <img  class="w-100" src="{{ url('/') }}/public/storage/items/{{ $item['item']->item_preview }}" alt="{{ $item['item']->item_name }}" class="single-thumbnail">
+                      <span class="gallery-item-caption mt-2 d-inline-block">{{ $item['item']->item_name }}</span>
+                      </a>
+                      @else
+                      <img src="{{ url('/') }}/public/img/no-image.png" alt="{{ $item['item']->item_name }}" class="single-thumbnail">
+                      @endif
+                      @endif
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="nav-designer" role="tabpanel" aria-labelledby="nav-Designer">
+         <div class="section-title text-center mb-4">
+            <h2>{{ trans('labels.aboutdesigner')}}</h2>
+          </div>
+            @if(count(@$designer) > 0)
+            <div class="design-slide owl-carousel owl-theme">
+              @foreach(@$designer as $key=>$value)              
+                <div class="item">
+                  <div class="section-title with-sub mb-4">
+                    <h2>{{ @$value->name }}</h2>
+                    <div class="share-fav">
+                      <ul>
+                        <li><a class="ti ti-heart" href="#"></a></li>
+                      </ul>
+                      <ul class="with-outline">
+                        <li><a class="ti ti-brand-facebook" href="{{ $value->facebook}}"></a></li>
+                        <li><a class="ti ti-brand-youtube" href="{{ $value->youtube }}"></a></li>
+                        <li><a class="ti ti-brand-instagram" href="{{ $value->instagram }}"></a></li>
+                        <li><a class="ti ti-brand-linkedin" href="{{ $value->linkedin }}"></a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-6">
+                          <div class="about-hotel">
+                              <img src="{{ url('/resources/views/customtheme/assets/img/designer.jpg') }}" class="img-fluid">
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="about-page-text">
+                            <p>{!! $value->about !!}</p>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              @endforeach
+            </div>
+        @endif
+        
+    </div>
+
+    <div class="tab-pane fade" id="nav-vendor" role="tabpanel" aria-labelledby="nav-vendor">
+        <div class="vendor-page"> 
+            <div class="row">
+                  <div class="col-md-12">
+                    <div class="vendor-about text-center mb-5">
+                      <div class="section-title mb-3">
+                        <h2>{{ trans('labes.aboutvendor')}}</h2>
+                      </div>
+                      <p>{{ @$itemuser->about}}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="vendor-info">
+                      <a href="mailto:example@email.com"><i class="ti ti-mail"></i>{{ @$itemuser->email }}</a>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="vendor-info">
+                      <a href="#"><i class="ti ti-phone"></i>{{ @$itemuser->email }}</a>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="vendor-info">
+                      <a href="#"><i class="ti ti-map"></i>{{ @$itemuser->address }}</a>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="nav-test" role="tabpanel" aria-labelledby="nav-test">
+    	 <div class="section-title text-center mb-4">
+            <h2>Products</h2>
+        </div>
+
+
+        <?php 
+        //echo "<pre>";print_r($category);exit;
+        ?>
+	   <!--  <div class="product-slide">  
+	      	<div class="product-card">
+	      		<div class="product-card-img">
+	      			<a href="#">
+	      				<img src="https://static.toiimg.com/photo/72975551.cms">
+	      			</a>
+	      			<button class="product-card-fav"><i class="ti ti-heart"></i></button>
+              <div class="on-hov-btns">
+                <button class="btn btn-light btn-icon btn-shadow font-size-base mx-2"><i class="ti ti-eye"></i></button>
+                <button class="btn btn-light btn-icon btn-shadow font-size-base mx-2"><i class="ti ti-shopping-cart"></i></button>
+              </div>
+	      		</div>
+	      		<div class="product-card-name">
+	      			<label><a href="#">Lable Name</a></label>
+	      			<span><a href="#">Second Lable Name</a></span>
+	      		</div>
+	      	</div>
+	    </div> -->
+    
+    <div class="row ">
+
+                       <!--  <?php 
+                                echo "<pre>";print_r($category['view'] );
+                        ?>
+ -->
+     <div class="col-md-4 col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <!-- <div class="widget widget-categories">
+                            <h3 class="widget-title">{{ trans('labels.roomtype') }}</h3>
+                            
+                        </div>
+                        <hr> -->
+
+
+                        <div class="rangeslider">
+                            <h3 class="widget-title">Price</h3>
+                            <div class="slider-wrapper">
+                                <input class="input-range"  data-slider-id='ex12cSlider' type="text" data-slider-step="1" data-slider-value="15, 85" data-slider-min="0" data-slider-max="100" data-slider-range="true" data-slider-tooltip_split="true" />
+                            </div>
+                        </div>
+
+
+                        <hr>
+                        <div class="widget widget-categories">
+                            <h3 class="widget-title">Most Seller</h3>
+                            <div class="widget widget-links">
+                                <ul class="widget-list cz-filter-list pt-1 m-0">
+
+                                    @if(count($mostSoldProduct) > 0)
+
+                                        @foreach($mostSoldProduct as $key=>$value)
+
+                                                <li class="widget-list-item cz-filter-item d-flex justify-content-between align-items-center mb-1">
+                                                    <div class="custom-control custom-checkbox">
+                                                      <input class="custom-control-input" type="checkbox"  name="mostsold[]" value="{{ $value->pro_id }}">
+                                                      <label class="custom-control-label cz-filter-item-text" >{{ $value->item_name}} </label>
+                                                    </div>
+                                                </li>
+
+                                        @endforeach
+
+                                    @endif
+                                  
+                                </ul>
+                            </div>
+                        </div> 
+                        <hr>
+                        <div class="widget widget-categories">
+                            <h3 class="widget-title">Category</h3>
+                            <div class="widget widget-links">
+                                <ul class="widget-list cz-filter-list pt-1 m-0">
+
+                                    @if(count($category) > 0)
+
+                                        @foreach($category['view'] as $key=>$value)
+
+                                         <li class="widget-list-item cz-filter-item mb-1">
+                                                  <!--  <div class="custom-control custom-checkbox">
+                                                  <input class="custom-control-input" type="checkbox" id="{{ $value['cat_id'] }}" name="item_category[]" value="{{ $value['cat_id'] }}" >
+                                                  <label class="custom-control-label cz-filter-item-text" for="{{ $value['cat_id'] }}"> -->
+                                                  <div class="catname"> {{ $value['category_name'] }}</div>
+                                                <!--   </label>
+                                                </div> -->
+
+                                                   <?php 
+
+                                                                $categoryId=$value['cat_id'];
+                                                                $value=DB::table('subcategory')->where('drop_status','=','no')->where('subcategory_status','=','1')->where('cat_id','=',$categoryId);
+                                                                $value= $value->where(function($q){
+                                                                    $q->where('subcatparent_id','=',null)->orWhere('subcatparent_id','=',0);
+                                                                });
+                                                                $value= $value->orderBy('cat_id', 'desc')->get(); 
+
+                                                                  if( count ($value) > 0 ){ ?>
+
+                                                                     <ul>
+                                                                           <?php  
+                                                                                foreach($value as $key=>$value1) { ?>
+
+                                                                                <li class="widget-list-item cz-filter-item d-flex justify-content-between align-items-center mb-1">
+                                                                                        <div class="custom-control custom-checkbox">
+                                                                                          <input class="custom-control-input" type="checkbox" id="{{ $value1->subcat_id }}" name="item_category[]" value="{{ $value1->subcat_id }}" >
+                                                                                          <label class="custom-control-label cz-filter-item-text" for="{{ $value1->subcat_id }}">-{{ $value1->subcategory_name }}</label>
+                                                                                        </div>
+                                                                                </li>
+
+                                                                                
+                                                                               
+
+                                                                                    <?php   $subcategoryId=$value1->subcat_id; 
+                                                                                            $subsubvalue=DB::table('subcategory')->where('drop_status','=','no')->where('subcategory_status','=','1')->where('cat_id','=',$categoryId);
+                                                                                            // $subsubvalue= $subsubvalue->where(function($q){
+                                                                                            $subsubvalue= $subsubvalue->where('subcatparent_id','=',$subcategoryId);
+                                                                                            //  });
+                                                                                            $subsubvalue= $subsubvalue->orderBy('cat_id', 'desc')->get(); 
+
+                                                                                        if( count ($subsubvalue) > 0 ){ ?>
+
+                                                                                             <ul >
+                                                                                                 <?php  
+                                                                                                foreach($subsubvalue as $key=>$subsubvalue){ ?>
+                                                                                
+                                                                                                   
+
+
+                                                                                                      <li class="widget-list-item cz-filter-item d-flex justify-content-between align-items-center mb-1">
+                                                                                                    <div class="custom-control custom-checkbox">
+                                                                                                        <input class="custom-control-input" type="checkbox" id="{{ $subsubvalue->subcat_id }}" name="item_category[]" value="{{ $value1->subcat_id }}" >
+                                                                                                        <label class="custom-control-label cz-filter-item-text" for="{{ $subsubvalue->subcat_id }}"> --
+                                                                                                        {{ $subsubvalue->subcategory_name }} </label>
+                                                                                                    </div>
+                                                                                                </li>
+
+                                                                                                <?php } ?>
+
+                                                                                             </ul>
+
+
+                                                                                        <?php } ?>
+
+
+
+                                                                                  
+
+                                                                                </li>
+
+                                                                          <?php   } ?>
+                                                                        </ul>
+                                                                <?php }
+                                                           
+  
+                                                  
+
+
+                                                    ?>
+                                            </li>
+
+
+                                    @endforeach
+                                    @endif
+                              
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+              <div class="col-md-8 col-lg-9">
+                <div class="near-box">
+                    <div class="row" id="prohtml">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+  <!--   <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="nav-room">
+         <div class="section-title text-center mb-4">
+            <h2>Location</h2>
+        </div>
+    </div> -->
+
+</div>
+
+
+</section>
+
+
+<section class="staf-fev bg-light-gray">
+    <div class="container">
+        <div class="section-title text-center mb-4">
+            <h2>Staff Favorites</h2>
+        </div>
+        <div class="row">
+
+           @foreach ($related['items'] as $p)
+           <div class="col-md-6 col-lg-3">
+              <div class="card card-5">
+                 @if($p->item_preview!='')
+                  <img src="{{ url('/') }}/public/storage/items/{{ $p->item_preview }}" alt="{{ $p->item_name }}">
+                @else
+                  <img src="{{ url('/') }}/public/img/no-image.png" alt="{{ $p->item_name }}">
+                @endif
+                 
+                 <div class="card-name"><a href="{{ URL::to('/item') }}/{{ $p->item_slug }}"> <span>{{ $p->item_name }}</span><span> {{ $p->username }}</span></a></div>
+                 <!-- <div class="card-name">Founder, <span>Director</span></div> -->
+                 <div class="card-icons">
+                  <a class="ti ti-brand-facebook" href="#"></a>
+                  <a class="ti ti-brand-twitter" href="#"></a>
+                  <a class="ti ti-brand-instagram" href="#"></a>
+                  <a class="ti ti-brand-linkedin" href="#"></a>
+                 </div>
+              </div>
+            </div>
+
+           @endforeach
+
+           
+        </div>
+    </div>
+</section>
+
+<section class="rvybe-text">
+    <div class="container">
+      <div class="rvybe-info-txt">
+        <h2>Rvybe</h2>        
+        <p>Join the more than 50,000 restaurants which fill seats and manage reservations with OpenTable.</p>
+        <a href="#" class="site-btn">Learn more</a>
+      </div>
+    </div>
+</section>
+
+
+
+<script type="text/javascript">
+
+
+    
+
+   /*   $("input:checkbox").click(function () {
+            if ($(this).is(":checked")) {
+
+                console.log($(this).val());
+                loadAllimages($("#roomid").val(),"<?php // echo $item['item']->item_id; ?>",$(this).val());
+             
+            } else {
+             
+            }
+    });*/
+     
+
+    function checkboxevt(){
+        var checked = []; var product=[];
+        $("input[name='item_category[]']:checked").each(function (){
+                checked.push(parseInt($(this).val()));
+        });
+
+         $("input[name='mostsold[]']:checked").each(function (){
+                product.push(parseInt($(this).val()));
+        });
+
+         loadAllimages($("#roomid").val(),"<?php echo $item['item']->item_id; ?>",checked,product);
+
+
+    }
+
+
+    $("input:checkbox").click(function () {
+           // if ($(this).is(":checked")) {
+                checkboxevt();
+             
+           // } else {
+
+             
+           // }
+    });
+     
+   
+    console.log(checked);
+    
+    function loadAllimages(roomid,hotelid,catid,product){
+
+        console.log("roomid",roomid);
+        console.log("hotelid",hotelid);
+        console.log("catid",catid);
+
+        $("#roomid").val(roomid);
+          jQuery.ajax({
+
+                url: "{{ url('/fetchroomproducthotel') }}",
+                method: 'post',
+                data: {
+
+                    roomid:roomid,
+                    hotelid:hotelid,
+                    catid:catid,
+                    product:product,
+                    "_token": "{{ csrf_token() }}"
+                    
+                },
+               dataType:"json",
+                success: function(result){
+                    console.log(result);
+
+                    $("#prohtml").html('');
+                    $("#prohtml").html(result.html);
+
+            
+
+
+
+                }
+
+        });
+
+    }
+</script>
+
+@endsection
